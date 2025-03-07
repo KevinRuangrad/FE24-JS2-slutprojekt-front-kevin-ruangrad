@@ -1,0 +1,22 @@
+{
+  "name": "parcell-mall",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "parcel ./src/index.html",
+    "build": "parcel build ./src/index.html --dist-dir public --public-url ./",
+    "clean": "del-cli ./.parcel-cache ./docs ./dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "del-cli": "^6.0.0",
+    "parcel": "^2.13.3"
+  },
+  "dependencies": {
+    "@swc/core": "^1.10.11",
+    "domhandler": "^5.0.3",
+    "htmlparser2": "^10.0.0"
+  }
+}
