@@ -1,34 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="shortcut icon" href="#" type="image/x-icon">
-    <link rel="stylesheet" href="/src/css/style.css">
-    <script type="module" src="./main.js"></script>
-    <script type="module" src="/src/main.ts"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scrumboard</title>
+    <link rel="shortcut icon" href="#" type="image/x-icon" />
+    <link rel="stylesheet" href="/src/css/style.css" />
   </head>
   <body>
-    <h2>Add a movie to the database</h2>
-    <form id="addMovie">
-      <input type="text" name="name" placeholder="name" required>
-      <input type="number" name="year" placeholder="year" required>
-      <input type="text" name="director" placeholder="director" required> 
-      <select name="genre">
-        <option value="drama">Drama</option>
-        <option value="action">Action</option>
-        <option value="fantasy">Comedy</option>
-      </select>
-      <button>Get Movie</button>
-    </form>
-    <br>
-    <h2>Get movie by year</h2>
-    <form id="searchYear">
-      <input type="number" placeholder="enter a year">
-      <button>Get Movies</button>
-    </form>
-    <div id="movieContainer">
+    <h1>Scrum Board</h1>
+    <div class="filters">
+      <div class="filter-group">
+          <span class="icon">👤</span>
+          <h2>Member</h2> 
+          <div id="member-filter" class="filter-dropdown custom-select">
+            <select>
+              <option value="all">All</option>
+              <!-- Add options for each member -->
+            </select>
+          </div>
+        </button>
+      </div>
+
+      <div class="filter-group">
+          <span class="icon">📂</span> 
+          <h2>Category</h2>
+          <div id="category-filter" class="filter-dropdown custom-select">
+            <select>
+              <option value="all">All</option>
+              <option value="frontend">Frontend Dev</option>
+              <option value="backend">Backend Dev</option>
+              <option value="dev">Dev</option>
+            </select>
+          </div>
+        </button>
+      </div>
+
+      <div class="filter-group">
+          <span class="icon">🕒</span> 
+          <h2>Sort by Timestamp</h2>
+          <div id="sort-timestamp" class="filter-dropdown custom-select">
+            <select>
+              <option value="newest">Newest to Oldest</option>
+              <option value="oldest">Oldest to Newest</option>
+            </select>
+          </div>
+        </button>
+      </div>
+
+      <div class="filter-group">
+          <span class="icon">🔤</span> 
+          <h2>Sort by Title</h2>
+          <div id="sort-title" class="filter-dropdown custom-select">
+            <select>
+              <option value="ascending">A to Z</option>
+              <option value="descending">Z to A</option>
+            </select>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="scrum-board">
+      <div class="column" id="todo">
+        <h2>To Do</h2>
+        <div class="task-list" id="todo-list">
+          <!-- Tasks will go here -->
+        </div>
+      </div>
+      <div class="column" id="inprogress">
+        <h2>In Progress</h2>
+        <div class="task-list" id="inprogress-list">
+          <!-- Tasks will go here -->
+        </div>
+      </div>
+      <div class="column" id="done">
+        <h2>Done</h2>
+        <div class="task-list" id="done-list">
+          <!-- Tasks will go here -->
+        </div>
+      </div>
     </div>
   </body>
 </html>

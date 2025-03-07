@@ -4,3 +4,138 @@
   box-sizing: border-box;
   font-family: Inter Display, sans-serif;
 }
+
+body {
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  text-align: center;
+  font-size: 3rem;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.scrum-board {
+  display: flex;
+  justify-content: center; /* Center columns horizontally */
+  gap: 20px; /* Add space between columns */
+}
+
+.column {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 500px;
+}
+
+.column h2 {
+  text-align: center;
+  color: white;
+  border-radius: 10px 10px 0 0;
+  padding: 10px;
+}
+
+.column#todo h2 {
+  background-color: #ff6666; /* Red for to-do column */
+}
+
+.column#inprogress h2 {
+  background-color: #ffcc66; /* Yellow for in-progress column */
+}
+
+.column#done h2 {
+  background-color: #66cc66; /* Green for done column */
+}
+
+#todo-list {
+  border-radius: 0 0 5px 5px;
+}
+
+#inprogress-list {
+  border-radius: 0 0 5px 5px;
+}
+
+#done-list {
+  border-radius: 0 0 5px 5px;
+}
+
+.task-list {
+  min-height: 200px;
+  border: 1px solid #ddd;
+  border-radius: 0 0 5px 5px;
+  padding: 10px;
+  background-color: #fafafa;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; 
+  border: none;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.filter-group h2 {
+  margin-right: 20px;
+  margin-left: 10px;
+  font-size: 1rem; /* Adjust font size as needed */
+}
+
+
+.custom-select {
+  min-width: 200px; /* Adjust width as needed */
+  position: relative;
+  border-radius: 30px;
+}
+
+.custom-select select {
+  appearance: none;
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.675em 6em 0.675em 1em;
+  background-color: #fff;
+  color: #000;
+  cursor: pointer;
+  border-radius: inherit;
+}
+
+.custom-select::before,
+.custom-select::after {
+  --size: 0.3rem;
+  content: "";
+  position: absolute;
+  right: 1rem;
+  pointer-events: none;
+}
+
+.custom-select::before {
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-bottom: var(--size) solid black;
+  top: 40%;
+}
+
+.custom-select::after {
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-top: var(--size) solid black;
+  top: 55%;
+}
+
+/* Styles when a valid option is selected (other than placeholder) */
+.custom-select.select-valid select {
+  background-color: #e9f7df;
+  border-color: #28a745;
+}
