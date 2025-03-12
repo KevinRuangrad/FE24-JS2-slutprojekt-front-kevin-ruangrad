@@ -139,7 +139,8 @@ h1 {
   border-color: #28a745;
 }
 
-.add-task-form {
+.add-task-form,
+.add-member {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -148,24 +149,30 @@ h1 {
   width: 500px;
 }
 
-.add-task-form h2 {
+.add-task-form h2,
+.add-member h2 {
   text-align: center;
   margin-bottom: 20px;
 }
 
-.add-task-form form {
+.add-task-form form,
+.add-member form {
   display: flex;
   flex-direction: column;
 }
 
-.add-task-form label {
+.add-task-form label,
+.add-member label {
   margin-bottom: 5px;
   font-weight: bold;
 }
 
 .add-task-form input[type="text"],
 .add-task-form textarea,
-.add-task-form select {
+.add-task-form select,
+.add-member input[type="text"],
+.add-member textarea,
+.add-member select {
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ddd;
@@ -173,7 +180,8 @@ h1 {
   font-size: 1rem;
 }
 
-.add-task-form button {
+.add-task-form button,
+.add-member button {
   padding: 10px;
   background-color: #28a745;
   color: #fff;
@@ -183,7 +191,8 @@ h1 {
   font-size: 1rem;
 }
 
-.add-task-form button:hover {
+.add-task-form button:hover,
+.add-member button:hover {
   background-color: #218838;
 }
 

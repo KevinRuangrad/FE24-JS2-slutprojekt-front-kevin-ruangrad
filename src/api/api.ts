@@ -1,14 +1,11 @@
 const API_BASE_URL = "http://localhost:3000";
 
-export type Category = "UX" | "dev frontend" | "dev backend";
-export type Status = "to do" | "in progress" | "done";
-
 export type Task = {
   id: string;
   title: string;
   description: string;
-  category: Category;
-  status: Status;
+  category: "frontend dev" | "backend dev" | "UX";
+  status: "to do" | "in progress" | "done";
   timestamp: string;
   assigned?: string;
 };
@@ -19,50 +16,129 @@ export type Member = {
   tasks: Task[];
 };
 
-async function fetchTasks(): Promise<Task[] | undefined> {
+async function fetchTasks(): Promise<Task[]> {
   try {
     const response = await fetch(`${API_BASE_URL}/task`);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    const tasks: Task[] = await response.json();
+    const tasks = await response.json();
     return tasks;
   } catch (error) {
     console.error("Failed to fetch tasks:", error);
+    return [];
   }
 }
 
-async function fetchMembers(): Promise<Member[] | undefined> {
+async function fetchMembers(): Promise<Member[]> {
   try {
     const response = await fetch(`${API_BASE_URL}/member`);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    const members: Member[] = await response.json();
+    const members = await response.json();
     return members;
   } catch (error) {
     console.error("Failed to fetch members:", error);
+    return [];
   }
 }
 
-async function addTask(
-  task: Omit<Task, "id" | "timestamp" | "status">
-): Promise<Task | undefined> {
+async function addTask(task: Partial<Task>): Promise<Task | null> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/task`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(task),
+      });
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Failed to add task:', errorText);
+        throw new Error('Network response was not ok');
+      }
+  
+      const addedTask = await response.json();
+      return addedTask;
+    } catch (error) {
+      console.error('Error adding task:', error);
+      return null;
+    }
+  }
+
+export async function addMember(
+  newMember: Partial<Member>
+): Promise<Member | null> {
   try {
-    const response = await fetch(`${API_BASE_URL}/task`, {
+    console.log("Sending new member data:", newMember); // Log the request payload
+    const response = await fetch(`${API_BASE_URL}/member`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(task),
+      body: JSON.stringify(newMember),
     });
+
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    const newTask: Task = await response.json();
-    return newTask;
+
+    const addedMember: Member = await response.json();
+    console.log("Added member response:", addedMember); // Log the response data
+
+    if (!addedMember) {
+      throw new Error("Failed to parse added member");
+    }
+    return addedMember;
   } catch (error) {
-    console.error("Failed to add task:", error);
+    console.error("Failed to add new member:", error);
+    return null;
+  }
+}
+
+export async function updateTask(task: Task, memberId?: string): Promise<Task> {
+  const response = await fetch(`${API_BASE_URL}/task/${task.id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...task, memberId }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update task");
+  }
+
+  return response.json();
+}
+
+export async function markTaskAsDone(taskId: string): Promise<Task> {
+  const response = await fetch(`${API_BASE_URL}/task/${taskId}/done`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to mark task as done");
+  }
+
+  return response.json();
+}
+
+export async function removeTask(taskId: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/task/${taskId}/complete`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to remove task");
   }
 }
 

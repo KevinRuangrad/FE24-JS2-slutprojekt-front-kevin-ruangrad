@@ -14,27 +14,46 @@
       <h2>Add New Task</h2>
       <form id="task-form">
         <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required />
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required></textarea>
-        <label for="category">Category:</label>
-        <select id="category" name="category" required>
-          <option value="frontend">Frontend Dev</option>
-          <option value="backend">Backend Dev</option>
+        <input type="text" id="task-input" name="title" placeholder="Enter task name">
+        <input type="text" id="task-description" name="description" placeholder="Enter task description">
+        <select id="task-category" name="category">
+          <option value="none">Select Category</option>
           <option value="ux">UX</option>
+          <option value="frontend">Frontend</option>
+          <option value="backend">Backend</option>
         </select>
-        <label for="assigned">Assigned to:</label>
-        <input type="text" id="assigned" name="assigned" />
         <button type="submit">Add Task</button>
       </form>
     </div>
+
+<div class="add-member">
+  <h2>Add a member</h2>
+  <form id="add-member-form">
+    <input type="text" id="member-input" name="name" placeholder="Enter member name">
+    <div class="checkbox-group">
+      <div class="checkbox-item">
+        <input type="checkbox" id="ux" name="roles" value="ux">
+        <label for="ux">UX</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" id="frontend" name="roles" value="frontend">
+        <label for="frontend">Frontend</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" id="backend" name="roles" value="backend">
+        <label for="backend">Backend</label>
+      </div>
+    </div>
+    <button type="submit" id="add-member">Add Member</button>
+  </form>
+</div>
     <div class="filters">
       <div class="filter-group">
         <h2>Filter:</h2>
           <span class="icon">👤</span>
           <h2>Member</h2> 
-          <div id="member-filter" class="filter-dropdown custom-select">
-            <select>
+          <div class="filter-dropdown custom-select">
+            <select id="member-filter" >
               <option value="all">All</option>
               <!-- Add options for each member -->
             </select>
@@ -49,7 +68,7 @@
               <option value="all">All</option>
               <option value="frontend">Frontend Dev</option>
               <option value="backend">Backend Dev</option>
-              <option value="dev">Dev</option>
+              <option value="UX">UX</option>
             </select>
           </div>
         </button>
