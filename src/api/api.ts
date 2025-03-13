@@ -45,28 +45,28 @@ async function fetchMembers(): Promise<Member[]> {
 }
 
 async function addTask(task: Partial<Task>): Promise<Task | null> {
-    try {
-      const response = await fetch(`${API_BASE_URL}/task`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(task),
-      });
-  
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Failed to add task:', errorText);
-        throw new Error('Network response was not ok');
-      }
-  
-      const addedTask = await response.json();
-      return addedTask;
-    } catch (error) {
-      console.error('Error adding task:', error);
-      return null;
+  try {
+    const response = await fetch(`${API_BASE_URL}/task`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Failed to add task:", errorText);
+      throw new Error("Network response was not ok");
     }
+
+    const addedTask = await response.json();
+    return addedTask;
+  } catch (error) {
+    console.error("Error adding task:", error);
+    return null;
   }
+}
 
 export async function addMember(
   newMember: Partial<Member>
@@ -99,19 +99,29 @@ export async function addMember(
 }
 
 export async function updateTask(task: Task, memberId?: string): Promise<Task> {
-  const response = await fetch(`${API_BASE_URL}/task/${task.id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ ...task, memberId }),
-  });
+  try {
+    console.log("Updating task:", task); // Log the task being updated
+    const response = await fetch(`${API_BASE_URL}/task/${task.id}/assign`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...task, memberId }),
+    });
 
-  if (!response.ok) {
-    throw new Error("Failed to update task");
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Failed to update task:", errorText); // Log the error response
+      throw new Error("Failed to update task");
+    }
+
+    const updatedTask = await response.json();
+    console.log("Updated task response:", updatedTask); // Log the updated task response
+    return updatedTask;
+  } catch (error) {
+    console.error("Error updating task:", error);
+    throw error;
   }
-
-  return response.json();
 }
 
 export async function markTaskAsDone(taskId: string): Promise<Task> {
@@ -142,4 +152,4 @@ export async function removeTask(taskId: string): Promise<void> {
   }
 }
 
-export { fetchTasks, fetchMembers, addTask };
+export { fetchTasks, fetchMembers, addTask};

@@ -99,9 +99,47 @@ import {
       console.error("Error adding member:", error);
     }
   });
+
+  document
+    .getElementById("member-filter")
+    ?.addEventListener("change", (event) => {
+      const selectedMember = (event.target as HTMLSelectElement).value;
+      displayTasks(tasks, members, undefined, selectedMember);
+    });
+
+  document
+    .getElementById("category-filter")
+    ?.querySelector("select")
+    ?.addEventListener("change", (event) => {
+      const selectedCategory = (event.target as HTMLSelectElement).value;
+      displayTasks(tasks, members, selectedCategory);
+    });
+
+  document
+    .getElementById("sort-timestamp")
+    ?.querySelector("select")
+    ?.addEventListener("change", (event) => {
+      const sortOrder = (event.target as HTMLSelectElement).value;
+      displayTasks(tasks, members, undefined, undefined, sortOrder);
+    });
+
+  document
+    .getElementById("sort-title")
+    ?.querySelector("select")
+    ?.addEventListener("change", (event) => {
+      const sortOrder = (event.target as HTMLSelectElement).value;
+      displayTasks(tasks, members, undefined, undefined, undefined, sortOrder);
+    });
 })();
 
-function displayTasks(tasks: Task[], members: Member[]) {
+function displayTasks(
+  tasks: Task[],
+  members: Member[],
+  selectedCategory?: string,
+  selectedMember?: string,
+  timestampSortOrder?: string,
+  titleSortOrder?: string
+) {
   console.log("Displaying tasks:", tasks); // Log tasks before displaying
   const todoList = document.getElementById("todo-list") as HTMLElement;
   const inProgressList = document.getElementById(
@@ -113,12 +151,41 @@ function displayTasks(tasks: Task[], members: Member[]) {
   inProgressList.innerHTML = ""; // Clear the in-progress list before adding tasks
   doneList.innerHTML = ""; // Clear the done list before adding tasks
 
-  if (!Array.isArray(tasks)) {
-    console.error("Tasks is not an array");
-    return;
+  let filteredTasks = tasks;
+
+  if (selectedCategory && selectedCategory !== "all") {
+    filteredTasks = filteredTasks.filter(
+      (task) => task.category === selectedCategory
+    );
   }
 
-  tasks.forEach((task) => {
+  if (selectedMember && selectedMember !== "all") {
+    filteredTasks = filteredTasks.filter(
+      (task) => task.assigned === selectedMember
+    );
+  }
+
+  if (timestampSortOrder) {
+    filteredTasks = filteredTasks.sort((a, b) => {
+      const dateA = new Date(a.timestamp).getTime();
+      const dateB = new Date(b.timestamp).getTime();
+      return timestampSortOrder === "newest" ? dateB - dateA : dateA - dateB;
+    });
+  }
+
+  if (titleSortOrder) {
+    filteredTasks = filteredTasks.sort((a, b) => {
+      const titleA = a.title.toLowerCase();
+      const titleB = b.title.toLowerCase();
+      if (titleSortOrder === "ascending") {
+        return titleA < titleB ? -1 : titleA > titleB ? 1 : 0;
+      } else {
+        return titleA > titleB ? -1 : titleA < titleB ? 1 : 0;
+      }
+    });
+  }
+
+  filteredTasks.forEach((task) => {
     console.log("Processing task:", task); // Log each task
     const taskElement = createTaskElement(task, members, tasks);
     if (task.status === "to do") {
@@ -255,7 +322,7 @@ function populateMemberFilter(members: Member[]) {
   const memberFilter = document.getElementById(
     "member-filter"
   ) as HTMLSelectElement;
-  memberFilter.innerHTML = '<option value="all">All</option>'; // Clear the filter before adding members
+  memberFilter.innerHTML = '<option value="all">All</option>'; // Reset the filter options
   members.forEach((member) => {
     const option = document.createElement("option");
     option.value = member.id;
