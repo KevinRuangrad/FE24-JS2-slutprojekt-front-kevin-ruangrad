@@ -13,7 +13,7 @@ import { populateMemberFilter, populateMemberDropdown } from "./utils/utils";
 
     members = await fetchMembers();
 
-    if (Array.isArray(tasks) && tasks.length > 0) {
+    if (tasks && tasks.length > 0) {
       displayTasks(tasks, members);
     } else {
       console.error("No tasks to display");
