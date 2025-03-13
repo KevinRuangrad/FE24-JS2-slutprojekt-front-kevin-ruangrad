@@ -68,9 +68,7 @@ async function addTask(task: Partial<Task>): Promise<Task | null> {
   }
 }
 
-export async function addMember(
-  newMember: Partial<Member>
-): Promise<Member | null> {
+async function addMember(newMember: Partial<Member>): Promise<Member | null> {
   try {
     console.log("Sending new member data:", newMember); // Log the request payload
     const response = await fetch(`${API_BASE_URL}/member`, {
@@ -98,7 +96,7 @@ export async function addMember(
   }
 }
 
-export async function updateTask(task: Task, memberId?: string): Promise<Task> {
+async function updateTask(task: Task, memberId?: string): Promise<Task> {
   try {
     console.log("Updating task:", task); // Log the task being updated
     const response = await fetch(`${API_BASE_URL}/task/${task.id}/assign`, {
@@ -124,7 +122,7 @@ export async function updateTask(task: Task, memberId?: string): Promise<Task> {
   }
 }
 
-export async function markTaskAsDone(taskId: string): Promise<Task> {
+async function markTaskAsDone(taskId: string): Promise<Task> {
   const response = await fetch(`${API_BASE_URL}/task/${taskId}/done`, {
     method: "PATCH",
     headers: {
@@ -139,7 +137,7 @@ export async function markTaskAsDone(taskId: string): Promise<Task> {
   return response.json();
 }
 
-export async function removeTask(taskId: string): Promise<void> {
+async function removeTask(taskId: string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/task/${taskId}/complete`, {
     method: "DELETE",
     headers: {
@@ -152,4 +150,12 @@ export async function removeTask(taskId: string): Promise<void> {
   }
 }
 
-export { fetchTasks, fetchMembers, addTask};
+export {
+  fetchTasks,
+  fetchMembers,
+  addTask,
+  addMember,
+  updateTask,
+  markTaskAsDone,
+  removeTask,
+};
