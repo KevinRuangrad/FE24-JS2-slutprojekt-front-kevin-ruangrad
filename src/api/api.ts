@@ -4,7 +4,7 @@ export type Task = {
   id: string;
   title: string;
   description: string;
-  category: "frontend dev" | "backend dev" | "UX";
+  category: "dev frontend" | "dev backend" | "ux";
   status: "to do" | "in progress" | "done";
   timestamp: string;
   assigned?: string;
@@ -13,6 +13,7 @@ export type Task = {
 export type Member = {
   id: string;
   name: string;
+  roles: ("ux" | "dev backend" | "dev frontend")[];
   tasks: Task[];
 };
 

@@ -6,6 +6,8 @@ export async function initializeEventListeners(
   tasks: Task[],
   members: Member[]
 ) {
+  displayTasks(tasks, members);
+
   document
     .getElementById("task-form")
     ?.addEventListener("submit", async (event) => {
@@ -14,7 +16,7 @@ export async function initializeEventListeners(
       const newTask = {
         title: formData.get("title") as string,
         description: formData.get("description") as string,
-        category: formData.get("category"),
+        category: formData.get("category") as string,
         status: "to do", // Default status
       } as Partial<Task>;
 
@@ -35,17 +37,26 @@ export async function initializeEventListeners(
       event.preventDefault();
       const formData = new FormData(event.target as HTMLFormElement);
       const newMemberName = formData.get("name") as string;
-      const newMemberRoles = Array.from(formData.getAll("roles")) as string[];
+      const newMemberRoles = Array.from(formData.getAll("roles")) as (
+        | "ux"
+        | "dev backend"
+        | "dev frontend"
+      )[];
 
-      const newMember = {
+      console.log("New member roles:", newMemberRoles); // Debugging line
+
+      const newMember: Partial<Member> = {
         name: newMemberName,
         roles: newMemberRoles,
       };
 
       try {
         const addedMember = await addMember(newMember);
-        populateMemberDropdown(members); // Update the dropdown with the new member
-        populateMemberFilter(members); // Update the filter with the new member
+        if (addedMember) {
+          members.push(addedMember); // Update the original members array
+          populateMemberDropdown(members); // Update the dropdown with the new member
+          populateMemberFilter(members); // Update the filter with the new member
+        }
       } catch (error) {
         console.error("Error adding member:", error);
       }
@@ -55,12 +66,12 @@ export async function initializeEventListeners(
     .getElementById("member-filter")
     ?.addEventListener("change", (event) => {
       const selectedMember = (event.target as HTMLSelectElement).value;
+      console.log("Selected member for filtering:", selectedMember); // Debugging line
       displayTasks(tasks, members, undefined, selectedMember);
     });
 
   document
     .getElementById("category-filter")
-    ?.querySelector("select")
     ?.addEventListener("change", (event) => {
       const selectedCategory = (event.target as HTMLSelectElement).value;
       displayTasks(tasks, members, selectedCategory);

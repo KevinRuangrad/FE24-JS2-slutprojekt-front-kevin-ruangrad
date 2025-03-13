@@ -1,10 +1,6 @@
 import { Task, Member } from "../api/api";
 import { updateTask, markTaskAsDone, removeTask } from "../api/api";
-import {
-  getMemberNameById,
-  populateMemberFilter,
-  populateMemberDropdown,
-} from "../utils/utils";
+import { getMemberNameById } from "../utils/utils";
 
 export function displayTasks(
   tasks: Task[],
@@ -18,7 +14,7 @@ export function displayTasks(
   const inProgressList = document.getElementById(
     "inprogress-list"
   ) as HTMLElement;
-  const doneList = document.getElementById("done-list") as HTMLElement; // Get the done list element
+  const doneList = document.getElementById("done-list") as HTMLElement;
 
   todoList.innerHTML = ""; // Clear the list before adding tasks
   inProgressList.innerHTML = ""; // Clear the in-progress list before adding tasks
@@ -81,7 +77,28 @@ export function createTaskElement(
     ? getMemberNameById(members, task.assigned)
     : "Unassigned";
 
-  const memberOptions = members
+  // Debugging: Log task category and member roles
+  console.log(`Task Category: ${task.category}`);
+  members.forEach((member) => {
+    console.log(`Member: ${member.name}, Roles: ${member.roles.join(", ")}`);
+  });
+
+  // Filter members based on the task's category
+  const filteredMembers = members.filter((member) => {
+    if (task.category === "dev frontend") {
+      return member.roles.includes("dev frontend");
+    } else if (task.category === "dev backend") {
+      return member.roles.includes("dev backend");
+    } else if (task.category === "ux") {
+      return member.roles.includes("ux");
+    }
+    return false;
+  });
+
+  // Debugging: Log filtered members
+  console.log(`Filtered Members for ${task.category}:`, filteredMembers);
+
+  const memberOptions = filteredMembers
     .map(
       (member) =>
         `<option value="${member.id}" ${

@@ -19,34 +19,35 @@
         <select id="task-category" name="category">
           <option value="none">Select Category</option>
           <option value="ux">UX</option>
-          <option value="frontend">Frontend</option>
-          <option value="backend">Backend</option>
+          <option value="dev frontend">Frontend</option>
+          <option value="dev backend">Backend</option>
         </select>
         <button type="submit">Add Task</button>
       </form>
     </div>
 
-<div class="add-member">
-  <h2>Add a member</h2>
-  <form id="add-member-form">
-    <input type="text" id="member-input" name="name" placeholder="Enter member name">
-    <div class="checkbox-group">
-      <div class="checkbox-item">
-        <input type="checkbox" id="ux" name="roles" value="ux">
-        <label for="ux">UX</label>
-      </div>
-      <div class="checkbox-item">
-        <input type="checkbox" id="frontend" name="roles" value="frontend">
-        <label for="frontend">Frontend</label>
-      </div>
-      <div class="checkbox-item">
-        <input type="checkbox" id="backend" name="roles" value="backend">
-        <label for="backend">Backend</label>
-      </div>
+    <div class="add-member">
+      <h2>Add a member</h2>
+      <form id="add-member-form">
+        <input type="text" id="member-input" name="name" placeholder="Enter member name">
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="ux" name="roles" value="ux">
+            <label for="ux">UX</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="frontend" name="roles" value="dev frontend">
+            <label for="frontend">Frontend</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="backend" name="roles" value="dev backend">
+            <label for="backend">Backend</label>
+          </div>
+        </div>
+        <button type="submit" id="add-member">Add Member</button>
+      </form>
     </div>
-    <button type="submit" id="add-member">Add Member</button>
-  </form>
-</div>
+
     <div class="filters">
       <div class="filter-group">
         <h2>Filter:</h2>
@@ -68,7 +69,7 @@
               <option value="all">All</option>
               <option value="dev backend">Backend Dev</option>
               <option value="dev frontend">Frontend Dev</option>
-              <option value="UX">UX</option>
+              <option value="ux">UX</option>
             </select>
           </div>
         </button>
