@@ -13,10 +13,27 @@ export async function initializeEventListeners(
     ?.addEventListener("submit", async (event) => {
       event.preventDefault();
       const formData = new FormData(event.target as HTMLFormElement);
+      const title = formData.get("title") as string;
+      const description = formData.get("description") as string;
+      const category = formData.get("category") as string;
+
+      if (!title) {
+        alert("Please fill in the task title.");
+        return;
+      }
+      if (!description) {
+        alert("Please fill in the task description.");
+        return;
+      }
+      if (!category) {
+        alert("Please select a task category.");
+        return;
+      }
+
       const newTask = {
-        title: formData.get("title") as string,
-        description: formData.get("description") as string,
-        category: formData.get("category") as string,
+        title,
+        description,
+        category,
         status: "to do", // Default status
       } as Partial<Task>;
 
@@ -28,6 +45,7 @@ export async function initializeEventListeners(
         }
       } catch (error) {
         console.error("Error adding task:", error);
+        alert("An error occurred while adding the task. Please try again.");
       }
     });
 
@@ -42,6 +60,15 @@ export async function initializeEventListeners(
         | "dev backend"
         | "dev frontend"
       )[];
+
+      if (!newMemberName) {
+        alert("Please fill in the member name.");
+        return;
+      }
+      if (newMemberRoles.length === 0) {
+        alert("Please select at least one role for the member.");
+        return;
+      }
 
       console.log("New member roles:", newMemberRoles); // Debugging line
 
@@ -59,6 +86,7 @@ export async function initializeEventListeners(
         }
       } catch (error) {
         console.error("Error adding member:", error);
+        alert("An error occurred while adding the member. Please try again.");
       }
     });
 
