@@ -2,6 +2,7 @@ import { Task, Member } from "../api/api";
 import { updateTask, markTaskAsDone, removeTask } from "../api/api";
 import { getMemberNameById } from "../utils/utils";
 
+// Display tasks on the DOM
 export function displayTasks(
   tasks: Task[],
   members: Member[],
@@ -16,24 +17,27 @@ export function displayTasks(
   ) as HTMLElement;
   const doneList = document.getElementById("done-list") as HTMLElement;
 
-  todoList.innerHTML = ""; // Clear the list before adding tasks
-  inProgressList.innerHTML = ""; // Clear the in-progress list before adding tasks
-  doneList.innerHTML = ""; // Clear the done list before adding tasks
+  todoList.innerHTML = "";
+  inProgressList.innerHTML = "";
+  doneList.innerHTML = "";
 
   let filteredTasks = tasks;
 
+  // Filter tasks by category
   if (selectedCategory && selectedCategory !== "all") {
     filteredTasks = filteredTasks.filter(
       (task) => task.category === selectedCategory
     );
   }
 
+  // Filter tasks by assigned member
   if (selectedMember && selectedMember !== "all") {
     filteredTasks = filteredTasks.filter(
       (task) => task.assigned === selectedMember
     );
   }
 
+  // Sort tasks by timestamp
   if (timestampSortOrder) {
     filteredTasks = filteredTasks.sort((a, b) => {
       const dateA = new Date(a.timestamp).getTime();
@@ -42,6 +46,7 @@ export function displayTasks(
     });
   }
 
+  // Sort tasks by title
   if (titleSortOrder) {
     filteredTasks = filteredTasks.sort((a, b) => {
       const titleA = a.title.toLowerCase();
@@ -54,6 +59,7 @@ export function displayTasks(
     });
   }
 
+  // Display tasks in the appropriate lists
   filteredTasks.forEach((task) => {
     const taskElement = createTaskElement(task, members, tasks);
     if (task.status === "to do") {
@@ -66,6 +72,7 @@ export function displayTasks(
   });
 }
 
+// Create a task element for the DOM
 export function createTaskElement(
   task: Task,
   members: Member[],
@@ -76,12 +83,6 @@ export function createTaskElement(
   const assignedName = task.assigned
     ? getMemberNameById(members, task.assigned)
     : "Unassigned";
-
-  // Debugging: Log task category and member roles
-  console.log(`Task Category: ${task.category}`);
-  members.forEach((member) => {
-    console.log(`Member: ${member.name}, Roles: ${member.roles.join(", ")}`);
-  });
 
   // Filter members based on the task's category
   const filteredMembers = members.filter((member) => {
@@ -94,10 +95,6 @@ export function createTaskElement(
     }
     return false;
   });
-
-  // Debugging: Log filtered members
-  console.log(`Filtered Members for ${task.category}:`, filteredMembers);
-
   const memberOptions = filteredMembers
     .map(
       (member) =>
@@ -131,6 +128,7 @@ export function createTaskElement(
         }
       `;
 
+  // Add event listener for assigning a member to a task
   if (task.status !== "in progress" && task.status !== "done") {
     const dropdown = taskElement.querySelector(
       ".assign-member-dropdown"
@@ -152,6 +150,7 @@ export function createTaskElement(
       displayTasks(tasks, members);
     });
   } else if (task.status === "in progress") {
+    // Add event listener for marking a task as done
     const markDoneButton = taskElement.querySelector(
       ".mark-done-button"
     ) as HTMLButtonElement;
@@ -169,6 +168,7 @@ export function createTaskElement(
       displayTasks(tasks, members);
     });
   } else if (task.status === "done") {
+    // Add event listener for removing a task
     const removeTaskButton = taskElement.querySelector(
       ".remove-task-button"
     ) as HTMLButtonElement;

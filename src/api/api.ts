@@ -1,5 +1,7 @@
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL =
+  "https://fe24-js2-slutprojekt-back-kevin-ruangrad.onrender.com";
 
+// Task type definition
 export type Task = {
   id: string;
   title: string;
@@ -10,6 +12,7 @@ export type Task = {
   assigned?: string;
 };
 
+// Member type definition
 export type Member = {
   id: string;
   name: string;
@@ -17,6 +20,7 @@ export type Member = {
   tasks: Task[];
 };
 
+// Fetch tasks from the API
 async function fetchTasks(): Promise<Task[]> {
   try {
     const response = await fetch(`${API_BASE_URL}/task`);
@@ -31,6 +35,7 @@ async function fetchTasks(): Promise<Task[]> {
   }
 }
 
+// Fetch members from the API
 async function fetchMembers(): Promise<Member[]> {
   try {
     const response = await fetch(`${API_BASE_URL}/member`);
@@ -45,6 +50,7 @@ async function fetchMembers(): Promise<Member[]> {
   }
 }
 
+// Add a new task to the API
 async function addTask(task: Partial<Task>): Promise<Task | null> {
   try {
     const response = await fetch(`${API_BASE_URL}/task`, {
@@ -69,9 +75,9 @@ async function addTask(task: Partial<Task>): Promise<Task | null> {
   }
 }
 
+// Add a new member to the API
 async function addMember(newMember: Partial<Member>): Promise<Member | null> {
   try {
-    console.log("Sending new member data:", newMember); // Log the request payload
     const response = await fetch(`${API_BASE_URL}/member`, {
       method: "POST",
       headers: {
@@ -85,11 +91,6 @@ async function addMember(newMember: Partial<Member>): Promise<Member | null> {
     }
 
     const addedMember: Member = await response.json();
-    console.log("Added member response:", addedMember); // Log the response data
-
-    if (!addedMember) {
-      throw new Error("Failed to parse added member");
-    }
     return addedMember;
   } catch (error) {
     console.error("Failed to add new member:", error);
@@ -97,25 +98,24 @@ async function addMember(newMember: Partial<Member>): Promise<Member | null> {
   }
 }
 
+// Update an existing task in the API
 async function updateTask(task: Task, memberId?: string): Promise<Task> {
   try {
-    console.log("Updating task:", task); // Log the task being updated
     const response = await fetch(`${API_BASE_URL}/task/${task.id}/assign`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...task, memberId }),
+      body: JSON.stringify({ ...task, assigned: memberId }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("Failed to update task:", errorText); // Log the error response
+      console.error("Failed to update task:", errorText);
       throw new Error("Failed to update task");
     }
 
     const updatedTask = await response.json();
-    console.log("Updated task response:", updatedTask); // Log the updated task response
     return updatedTask;
   } catch (error) {
     console.error("Error updating task:", error);
@@ -123,6 +123,7 @@ async function updateTask(task: Task, memberId?: string): Promise<Task> {
   }
 }
 
+// Mark a task as done in the API
 async function markTaskAsDone(taskId: string): Promise<Task> {
   const response = await fetch(`${API_BASE_URL}/task/${taskId}/done`, {
     method: "PATCH",
@@ -138,6 +139,7 @@ async function markTaskAsDone(taskId: string): Promise<Task> {
   return response.json();
 }
 
+// Remove a task from the API
 async function removeTask(taskId: string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/task/${taskId}/complete`, {
     method: "DELETE",
